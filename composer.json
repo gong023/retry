@@ -1,0 +1,25 @@
+{
+    "name": "gong023/retry",
+    "type": "lib",
+    "require-dev": {
+        "phpunit/phpunit": "4.8.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Retry\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Retry\\": "tests"
+        }
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "gong023",
+            "email": "gon.gong.gone@gmail.com"
+        }
+    ],
+    "require": {}
+}
