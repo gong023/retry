@@ -14,20 +14,20 @@ class Container
     public function execute($times, callable $fn)
     {
         $this->callWithCheck('beforeOnce');
-        for ($i = 1; $i <= $times; $i++) {
+        $ret = null;
+        for ($i = 0; $i < $times; $i++) {
             $this->callWithCheck('beforeEach');
             try {
-                $ret = $fn();
+                $ret = $fn($i);
                 $this->callWithCheck('afterEach', $ret);
                 goto afterOnce;
             } catch (\Exception $e) {
-                if ($i === $times) {
-                    throw new $e;
+                if ($i === $times - 1) {
+                    throw $e;
                 }
             }
         }
         afterOnce:
-        /** @noinspection PhpUndefinedVariableInspection */
         $this->callWithCheck('afterOnce', $ret);
         $this->procs = [];
 
