@@ -6,11 +6,19 @@ class TestException extends \Exception {}
 
 class RetryTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @var Retry
+     */
+    private $retry;
+
+    public function setUp()
+    {
+        $this->retry = new Retry();
+    }
+
     public function testRetry()
     {
-        $retry = new Retry();
-
-        $ret = $retry
+        $ret = $this->retry
             ->beforeEach(function() {})
             ->beforeOnce(function() {})
             ->afterEach(function() {})
@@ -25,13 +33,23 @@ class RetryTest extends \PHPUnit_Framework_TestCase
      */
     public function testRetryFails()
     {
-        $retry = new Retry();
-
-        $retry
+        $this->retry
             ->beforeEach(function() {})
             ->beforeOnce(function() {})
             ->afterEach(function() {})
             ->afterOnce(function() {})
-            ->retry(3, function() { throw new \TestException; });
+            ->retry(2, function() { throw new \TestException; });
+    }
+
+    public function testIndex()
+    {
+        $ret = $this->retry->retry(3, function($index) {
+            if ($index === 2) {
+                return $index;
+            }
+            throw new TestException;
+        });
+
+        $this->assertSame(2, $ret);
     }
 }
