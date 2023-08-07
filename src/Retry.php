@@ -4,6 +4,8 @@ namespace Retry;
 
 class Retry
 {
+    private $container;
+
     public function __construct()
     {
         $this->container = new Container();
